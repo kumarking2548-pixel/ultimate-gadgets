@@ -1,180 +1,120 @@
-
-
-/* MOBILE MENU */
+// MOBILE MENU
 
 function toggleMenu() {
-
-    const nav = document.getElementById("navMenu");
-
-    nav.classList.toggle("active");
-
+  const menu = document.getElementById("mobileMenu");
+  menu.classList.toggle("active");
 }
 
 
-/* SEARCH PRODUCTS */
+// SEARCH PRODUCTS
 
 function searchProducts() {
 
-    const input =
-        document.getElementById("searchInput").value
-        .toLowerCase()
-        .trim();
-
-    const products =
-        document.querySelectorAll(".product");
-
-    products.forEach(function(product) {
-
-        const productName =
-            product.innerText.toLowerCase();
-
-        if (productName.includes(input)) {
-
-            product.style.display = "block";
-
-        } else {
-
-            product.style.display = "none";
-
-        }
-
-    });
-
-}
-
-
-/* CATEGORY FILTER */
-
-function filterCategory(category) {
-
-    const products =
-        document.querySelectorAll(".product");
-
-    products.forEach(function(product) {
-
-        const productCategory =
-            product.getAttribute("data-category");
-
-        if (productCategory === category) {
-
-            product.style.display = "block";
-
-        } else {
-
-            product.style.display = "none";
-
-        }
-
-    });
-
+  const search =
     document
-        .getElementById("trending")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
+      .getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
 
-}
+  const products =
+    document.querySelectorAll(".product-card");
 
+  let found = 0;
 
-/* PRODUCT BUTTON */
+  products.forEach(product => {
 
-function buyProduct(productName) {
+    const name =
+      product
+        .querySelector("h3")
+        .textContent
+        .toLowerCase();
 
-    /*
-        IMPORTANT:
+    const category =
+      product
+        .querySelector(".category")
+        .textContent
+        .toLowerCase();
 
-        Replace the link below with your
-        Amazon affiliate / product link.
+    if (
+      name.includes(search) ||
+      category.includes(search)
+    ) {
 
-        Example:
-
-        const productLinks = {
-            "Wireless Bluetooth Earbuds":
-            "YOUR-AMAZON-AFFILIATE-LINK"
-        };
-    */
-
-    const productLinks = {
-
-        "Wireless Bluetooth Earbuds":
-            "https://www.amazon.in/",
-
-        "Premium Smart Watch":
-            "https://www.amazon.in/",
-
-        "20W Fast Charging Power Bank":
-            "https://www.amazon.in/",
-
-        "Magnetic Phone Stand":
-            "https://www.amazon.in/",
-
-        "Smart LED Light":
-            "https://www.amazon.in/",
-
-        "Mini Portable Bluetooth Speaker":
-            "https://www.amazon.in/"
-
-    };
-
-
-    const link = productLinks[productName];
-
-
-    if (link) {
-
-        window.open(link, "_blank");
+      product.style.display = "block";
+      found++;
 
     } else {
 
-        alert(
-            "Product link is not available yet."
-        );
+      product.style.display = "none";
 
     }
 
+  });
+
+  document.getElementById("noProducts").style.display =
+    found === 0 ? "block" : "none";
 }
 
 
-/* NEWSLETTER */
+// CATEGORY FILTER
 
-function subscribe(event) {
+function filterProducts(category) {
+
+  const products =
+    document.querySelectorAll(".product-card");
+
+  let found = 0;
+
+  products.forEach(product => {
+
+    const productCategory =
+      product.dataset.category;
+
+    if (
+      category === "all" ||
+      productCategory === category
+    ) {
+
+      product.style.display = "block";
+      found++;
+
+    } else {
+
+      product.style.display = "none";
+
+    }
+
+  });
+
+  document.getElementById("noProducts").style.display =
+    found === 0 ? "block" : "none";
+
+  // Clear search box
+  document.getElementById("searchInput").value = "";
+
+  // Scroll to products
+  document
+    .getElementById("products")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+}
+
+
+// BUY BUTTON DEMO
+
+document.querySelectorAll(".buy-btn").forEach(button => {
+
+  button.addEventListener("click", function(event) {
 
     event.preventDefault();
 
-    const email =
-        document.getElementById("email").value;
+    alert(
+      "Product link will be added here.\n\n" +
+      "You can add your Amazon affiliate link to this button."
+    );
 
-    if (email) {
-
-        alert(
-            "Thanks for subscribing! 🔥\n\n" +
-            "We'll keep you updated with new gadget deals."
-        );
-
-        document.getElementById("email").value = "";
-
-    }
-
-}
-
-
-/* CLOSE MOBILE MENU AFTER CLICK */
-
-document.querySelectorAll("nav a").forEach(function(link) {
-
-    link.addEventListener("click", function() {
-
-        document
-            .getElementById("navMenu")
-            .classList.remove("active");
-
-    });
+  });
 
 });
-
-
-/* PAGE LOAD MESSAGE */
-
-console.log(
-    "⚡ Ultimate Gadgets website loaded successfully!"
-);
